@@ -181,7 +181,7 @@ export function QuestionEngine({
                 <MCQOptions question={question as MCQQuestion} selected={selectedAnswer as string} onSelect={setSelectedAnswer} />
               )}
               {question.format === 'msq' && (
-                <MSQOptions question={question as MSQQuestion} selected={selectedAnswer as string[]} onSelect={setSelectedAnswer} />
+                <MSQOptions question={question as MSQQuestion} selected={(selectedAnswer as string[] | null) ?? []} onSelect={setSelectedAnswer} />
               )}
               {question.format === 'numeric-sa' && (
                 <NumericInput question={question as NumericSAQuestion} value={selectedAnswer as number | null} onChange={setSelectedAnswer} />
@@ -258,16 +258,17 @@ function MCQOptions({ question, selected, onSelect }: { question: MCQQuestion; s
   );
 }
 
-function MSQOptions({ question, selected, onSelect }: { question: MSQQuestion; selected: string[]; onSelect: (v: string[]) => void }) {
+function MSQOptions({ question, selected, onSelect }: { question: MSQQuestion; selected: string[] | null; onSelect: (v: string[]) => void }) {
+  const sel = selected ?? [];
   const toggle = (id: string) => {
-    onSelect(selected.includes(id) ? selected.filter(s => s !== id) : [...selected, id]);
+    onSelect(sel.includes(id) ? sel.filter(s => s !== id) : [...sel, id]);
   };
   return (
     <div className="space-y-2" role="group" aria-label="Select all correct options">
       <p className="text-sm text-[#516174]">Select all that apply:</p>
       {question.options.map((opt, i) => {
         const letter = String.fromCharCode(65 + i);
-        const isSelected = selected.includes(opt.id);
+        const isSelected = sel.includes(opt.id);
         return (
           <button
             key={opt.id}
@@ -386,7 +387,7 @@ function AnswerFeedback({ question, selectedAnswer, showExplanation, setShowExpl
             const letter = String.fromCharCode(65 + i);
             const wasSelected = question.format === 'mcq'
               ? selectedAnswer === opt.id
-              : (selectedAnswer as string[]).includes(opt.id);
+              : (selectedAnswer as string[] | null)?.includes(opt.id) ?? false;
             return (
               <div key={opt.id} className={`px-4 py-3 rounded-lg border-2 text-sm ${opt.isCorrect ? 'border-[#0B7A75] bg-[#E7F6F2]' : wasSelected ? 'border-[#B42318] bg-[#FEF2F2]' : 'border-[#D9E2EF] bg-white'}`}>
                 <div className="flex items-start gap-2">

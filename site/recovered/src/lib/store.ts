@@ -242,7 +242,7 @@ export const useStore = create<AppState & AppActions>((set, get) => ({
     const mod = modules.find(m => m.id === moduleId);
     const moduleStatus = { ...state.moduleStatus };
     if (mod) {
-      const subskillMasteries = mod.subskills.map(sk => subskillMasteries[sk]);
+      const subskillMasteries = mod.subskills.map(sk => state.subskillMastery[sk]);
       const anyStarted = subskillMasteries.some(sm => sm && sm.totalAttempts > 0);
       const avgMastery = subskillMasteries.length > 0
         ? Math.round(subskillMasteries.reduce((a, sm) => a + (sm?.mastery ?? 0), 0) / subskillMasteries.length)

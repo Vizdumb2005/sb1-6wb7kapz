@@ -70,6 +70,7 @@ export const modules: ModuleDef[] = [
     id: 'lru-buffer',
     title: 'LRU Buffer Management',
     shortTitle: 'LRU Buffer',
+    priority: 'P0',
     description: 'Simulating LRU page replacement, counting hits, misses, and page faults.',
     whyItMatters: 'LRU appears in multiple separate papers with 3–4 frame buffers. The question is always about exact simulation — not intuition.',
     objectives: [

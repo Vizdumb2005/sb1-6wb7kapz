@@ -243,7 +243,7 @@ function SidebarHeader({ onClose }: { onClose?: () => void }) {
 // ONBOARDING PAGE
 // ============================================================
 
-function OnboardingPage({ navigate }: { navigate: (p: string) => void }) {
+function OnboardingPage({ navigate }: { navigate: (p: string, m?: string | null) => void }) {
   const store = useStore();
   const [step, setStep] = useState(0); // 0: intro, 1: confidence, 2: diagnostic, 3: results
   const [topicConfidence, setTopicConfidence] = useState<Record<string, number>>({});
